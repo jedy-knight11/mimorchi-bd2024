@@ -6,24 +6,34 @@
 <title>Happy Birthday, My Love</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.147.0/three.min.js"></script>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Margarine&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Margarine&family=Space+Grotesk:wght@500;600;700&family=VT323&display=swap');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   --cream:#f5efe6;--aged:#ede0cc;--parchment:#d9c9b0;
-  --blush:#e8b4b8;--rose:#c97b84;--charcoal:#2c2825;
+  --blush:#e8b4b8;--rose:#c97b84;--rose-deep:#b0616b;--charcoal:#2c2825;
   --ink:#1a1512;--taupe:#8b7355;--sage:#9aab89;
-  --lavender:#c3b8d8;--gold:#c9a84c;
+  --lavender:#c3b8d8;--gold:#c9a84c;--gold-deep:#a8862f;
   --shadow:rgba(44,40,37,0.18);--tape:rgba(205,194,160,0.55);
+  /* layered "real paper" shadow — soft ambient + a touch of contact shadow */
+  --paper-shadow:2px 3px 8px rgba(44,40,37,.10), 5px 8px 22px rgba(44,40,37,.14), 0 1px 2px rgba(44,40,37,.10);
+  --paper-shadow-hover:3px 5px 14px rgba(44,40,37,.14), 8px 14px 36px rgba(44,40,37,.20), 0 1px 2px rgba(44,40,37,.12);
   --font:'Margarine',cursive;
+  --font-display:'Space Grotesk',sans-serif;
+  --font-osd:'VT323',monospace;
+  --osd:#ffb03a;
 }
 html{scroll-snap-type:y mandatory;overflow-y:scroll;scroll-behavior:smooth;
   background:var(--aged);font-family:var(--font);color:var(--charcoal);
-  filter:sepia(10%) contrast(1.1);}
+  filter:sepia(11%) contrast(1.06) saturate(1.04) brightness(1.01);}
 body{overflow-x:hidden}
 body::before{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
   opacity:.5;mix-blend-mode:multiply}
+/* soft warm vignette to frame every page like an old photo album */
+body::after{content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;
+  background:radial-gradient(120% 90% at 50% 45%,transparent 55%,rgba(44,40,37,.10) 100%)}
 section{scroll-snap-align:start;min-height:100vh;position:relative;overflow:hidden;
   display:flex;align-items:center;justify-content:center}
 .torn-bottom::after,.torn-top::before{content:'';display:block;position:absolute;
@@ -47,18 +57,18 @@ section{scroll-snap-align:start;min-height:100vh;position:relative;overflow:hidd
   background-image:repeating-linear-gradient(to bottom,transparent 0,transparent 31px,rgba(180,160,140,.16) 31px,rgba(180,160,140,.16) 32px)}
 .cover-inner{position:relative;z-index:2;display:flex;align-items:center;justify-content:center;gap:3.5rem;padding:2rem;flex-wrap:wrap}
 .hero-photo-wrap{position:relative;background:#fff;padding:13px 13px 50px 13px;
-  box-shadow:4px 6px 24px var(--shadow);transform:rotate(-3deg);flex-shrink:0;
+  box-shadow:var(--paper-shadow);transform:rotate(-3deg);flex-shrink:0;
   width:clamp(200px,30vw,300px);opacity:0}
-.hero-photo-wrap::after{content:'birthday girl ♡';position:absolute;bottom:12px;
-  left:0;right:0;text-align:center;font-family:var(--font);font-size:1rem;color:var(--charcoal)}
+.hero-photo-wrap::after{content:'birthday girl ♡';position:absolute;bottom:14px;
+  left:0;right:0;text-align:center;font-family:var(--font-display);font-weight:600;font-size:.92rem;color:var(--charcoal)}
 .hero-tape{display:block;width:80px;height:24px;background:var(--tape);position:absolute;
   box-shadow:0 1px 3px rgba(0,0,0,.1);border-left:1px solid rgba(255,255,255,.4);border-right:1px solid rgba(255,255,255,.4)}
 .hero-tape-tl{top:-12px;left:50%;transform:translateX(-50%) rotate(-2deg)}
 .hero-tape-br{bottom:-12px;right:25%;transform:rotate(3deg)}
 .hero-photo{display:block;width:100%;aspect-ratio:1/1;object-fit:cover;object-position:center center}
 .cover-text{text-align:center}
-.cover-date{font-family:var(--font);font-size:clamp(.9rem,2vw,1.1rem);color:var(--taupe);letter-spacing:.1em;margin-bottom:1rem;opacity:0}
-.cover-title{font-family:var(--font);font-size:clamp(3rem,9vw,6.5rem);color:var(--ink);line-height:1.12;opacity:0}
+.cover-date{font-family:var(--font);font-size:clamp(.9rem,2vw,1.1rem);color:var(--taupe);letter-spacing:.14em;margin-bottom:.8rem;opacity:0}
+.cover-title{font-family:var(--font-display);font-weight:700;font-size:clamp(2.8rem,8vw,5.6rem);color:var(--ink);line-height:1.04;letter-spacing:-.02em;opacity:0}
 .cover-title span{color:var(--rose)}
 .cover-subtitle{font-family:var(--font);font-size:clamp(1rem,2.6vw,1.45rem);color:var(--taupe);margin-top:.6rem;opacity:0}
 .squiggle{display:block;width:280px;margin:.7rem auto 0;opacity:0}
@@ -70,22 +80,22 @@ section{scroll-snap-align:start;min-height:100vh;position:relative;overflow:hidd
 
 /* ── SECTION 2 MEMORIES ── */
 #memories{background:var(--parchment);align-items:flex-start;padding:4rem 2rem}
-.memories-heading{font-family:var(--font);font-size:clamp(2rem,5vw,3.4rem);
-  color:var(--charcoal);position:absolute;top:2.5rem;left:3rem;opacity:0;transform:rotate(-2deg)}
+.memories-heading{font-family:var(--font-display);font-weight:700;font-size:clamp(2rem,5vw,3.4rem);
+  letter-spacing:-.01em;color:var(--charcoal);position:absolute;top:2.4rem;left:3rem;opacity:0;transform:rotate(-2deg)}
 .polaroid{position:absolute;background:#fff;padding:13px 13px 50px 13px;
-  box-shadow:3px 4px 18px var(--shadow);opacity:0;will-change:transform;transition:box-shadow .25s}
-.polaroid:hover{box-shadow:6px 8px 28px var(--shadow);z-index:20!important}
+  box-shadow:var(--paper-shadow);opacity:0;will-change:transform;transition:box-shadow .25s,filter .25s}
+.polaroid:hover{box-shadow:var(--paper-shadow-hover);filter:brightness(1.04);z-index:20!important}
 .polaroid img{display:block;width:100%;aspect-ratio:1/1;object-fit:cover;object-position:center center}
-.polaroid-caption{position:absolute;bottom:10px;left:0;right:0;text-align:center;
-  font-family:var(--font);font-size:.95rem;color:var(--charcoal);padding:0 8px}
+.polaroid-caption{position:absolute;bottom:12px;left:0;right:0;text-align:center;
+  font-family:var(--font-display);font-weight:600;font-size:.88rem;color:var(--charcoal);padding:0 8px}
 
 /* ── SECTION 3 REASONS ── */
 #reasons{background:var(--cream);flex-direction:column;padding:4rem 2rem}
 #reasons::before{content:'';position:absolute;inset:0;pointer-events:none;
   background-image:repeating-linear-gradient(to bottom,transparent 0,transparent 37px,rgba(180,160,140,.14) 37px,rgba(180,160,140,.14) 38px)}
 .margin-line{position:absolute;left:88px;top:0;bottom:0;width:2px;background:rgba(200,100,100,.22);z-index:0}
-.reasons-heading{font-family:var(--font);font-size:clamp(1.8rem,5vw,3rem);
-  color:var(--rose);margin-bottom:2.5rem;transform:rotate(-1.5deg);opacity:0}
+.reasons-heading{font-family:var(--font-display);font-weight:700;font-size:clamp(1.9rem,5vw,3rem);
+  letter-spacing:-.01em;color:var(--rose);margin-bottom:2.2rem;transform:rotate(-1.5deg);opacity:0}
 .reason-item{display:flex;align-items:flex-start;gap:1rem;max-width:680px;width:100%;
   margin-bottom:1.2rem;opacity:0;transform:translateX(-40px);position:relative}
 .reason-num{font-family:var(--font);font-size:1.7rem;color:var(--rose);line-height:1;min-width:2rem;text-align:right}
@@ -95,8 +105,8 @@ section{scroll-snap-align:start;min-height:100vh;position:relative;overflow:hidd
 
 /* ── SECTION 4 TIMELINE ── */
 #timeline{background:var(--aged);flex-direction:column;padding:5rem 2rem 4rem}
-.timeline-heading{font-family:var(--font);font-size:clamp(1.8rem,5vw,3rem);
-  color:var(--charcoal);margin-bottom:3rem;opacity:0;text-align:center}
+.timeline-heading{font-family:var(--font-display);font-weight:700;font-size:clamp(1.9rem,5vw,3rem);
+  letter-spacing:-.01em;color:var(--charcoal);margin-bottom:3rem;opacity:0;text-align:center}
 .tl-track{position:relative;width:100%;max-width:700px}
 .tl-line{position:absolute;left:50%;top:0;bottom:0;width:2px;
   background:var(--taupe);transform-origin:top center;transform:scaleY(0)}
@@ -107,13 +117,88 @@ section{scroll-snap-align:start;min-height:100vh;position:relative;overflow:hidd
   width:14px;height:14px;border-radius:50%;background:var(--rose);
   border:3px solid var(--cream);box-shadow:0 0 0 2px var(--rose);z-index:2}
 .tl-card{background:#fff;padding:1rem 1.2rem;border-radius:2px;
-  box-shadow:2px 3px 14px var(--shadow);max-width:300px}
+  box-shadow:var(--paper-shadow);max-width:300px}
 .tl-item:nth-child(odd) .tl-card{transform:rotate(-1.2deg)}
 .tl-item:nth-child(even) .tl-card{transform:rotate(1.5deg)}
 .tl-photo-wrap{width:100%;margin-bottom:.6rem;overflow:hidden;border-radius:2px}
 .tl-photo{display:block;width:100%;height:200px;object-fit:cover;object-position:center center;border-radius:2px}
 .tl-when{font-family:var(--font);font-size:.88rem;color:var(--taupe)}
-.tl-what{font-family:var(--font);font-size:1.05rem;color:var(--charcoal);line-height:1.45;margin-top:.25rem}
+.tl-what{font-family:var(--font-display);font-weight:600;font-size:1rem;color:var(--charcoal);line-height:1.45;margin-top:.25rem}
+
+/* ── SECTION · VINTAGE DIGICAM ── */
+#digicam{background:var(--aged);flex-direction:column;padding:4rem 2rem}
+.cam-heading{font-family:var(--font-display);font-weight:700;font-size:clamp(2rem,5.5vw,3.4rem);
+  letter-spacing:-.01em;color:var(--charcoal);transform:rotate(-1.5deg);margin-bottom:1.6rem;opacity:0;text-align:center}
+.cam-stage{display:flex;flex-direction:column;align-items:center;gap:1rem;opacity:0}
+/* silver point-and-shoot body (back view) */
+.cam-body{position:relative;display:flex;flex-direction:column;gap:.8rem;
+  background:linear-gradient(172deg,#dcd8cf,#bab5aa 55%,#a09b90);
+  border-radius:18px;padding:1rem 1.2rem 1.3rem;
+  box-shadow:var(--paper-shadow),inset 0 2px 3px rgba(255,255,255,.65),inset 0 -6px 14px rgba(0,0,0,.22)}
+.cam-body::before{content:'';position:absolute;inset:0;border-radius:18px;pointer-events:none;
+  background:repeating-linear-gradient(90deg,rgba(255,255,255,.05) 0 1px,transparent 1px 3px)}
+/* protruding shutter + power on the top edge */
+.cam-body::after{content:'';position:absolute;top:-9px;right:34px;width:54px;height:12px;border-radius:6px 6px 0 0;
+  background:linear-gradient(180deg,#e8e4db,#b5b0a5);box-shadow:inset 0 2px 2px rgba(255,255,255,.7),0 -1px 3px rgba(0,0,0,.2)}
+.cam-topbar{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:0 .2rem}
+.cam-brand{font-family:var(--font);font-size:.68rem;letter-spacing:.26em;text-transform:uppercase;
+  color:#6f6a60;text-shadow:0 1px 0 rgba(255,255,255,.5)}
+.cam-model{font-family:var(--font-osd);font-size:.9rem;color:#8a4a44;letter-spacing:.1em}
+.cam-main{display:flex;gap:1rem;align-items:stretch}
+.cam-bezel{background:linear-gradient(180deg,#2b2723,#17140f);border-radius:10px;padding:11px;
+  box-shadow:inset 0 2px 6px rgba(0,0,0,.8),0 1px 1px rgba(255,255,255,.35)}
+.cam-screen{position:relative;width:clamp(240px,52vw,440px);aspect-ratio:4/3;background:#050403;overflow:hidden;
+  border-radius:3px;cursor:pointer}
+.cam-screen canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.cam-screen img,.cam-screen video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block}
+.cam-screen::after{content:'';position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(90% 60% at 24% 12%,rgba(255,255,255,.13),transparent 55%)}
+/* orange OSD text over the screen */
+.cam-osd{position:absolute;inset:0;pointer-events:none;font-family:var(--font-osd);color:var(--osd);
+  text-shadow:0 0 5px rgba(255,150,30,.55),1px 1px 0 rgba(0,0,0,.75);transition:opacity .2s}
+.cam-osd.off{opacity:0}
+.osd-mode{position:absolute;top:7px;left:10px;font-size:clamp(.95rem,2vw,1.25rem);letter-spacing:.06em}
+.osd-mode .rec-dot{display:inline-block;width:.55em;height:.55em;border-radius:50%;background:#ff4b3a;
+  margin-right:.3em;vertical-align:baseline;box-shadow:0 0 6px #ff4b3a;animation:camblink 1s steps(1) infinite}
+@keyframes camblink{50%{opacity:0}}
+.osd-count{position:absolute;top:7px;right:38px;font-size:clamp(.95rem,2vw,1.25rem)}
+.osd-batt{position:absolute;top:11px;right:9px;width:22px;height:11px;border:2px solid var(--osd);border-radius:2px;
+  box-shadow:0 0 5px rgba(255,150,30,.4)}
+.osd-batt::before{content:'';position:absolute;right:-5px;top:2px;width:3px;height:3px;background:var(--osd)}
+.osd-batt::after{content:'';position:absolute;left:1px;top:1px;bottom:1px;width:70%;background:var(--osd)}
+.osd-caption{position:absolute;bottom:7px;left:10px;right:10px;font-size:clamp(1rem,2.2vw,1.35rem);
+  letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.osd-date{position:absolute;bottom:calc(7px + 1.45em);right:10px;font-size:clamp(.95rem,2vw,1.2rem);letter-spacing:.08em}
+.osd-noimg{position:absolute;inset:0;display:none;align-items:center;justify-content:center;
+  font-size:clamp(1.3rem,3vw,2rem);letter-spacing:.15em}
+/* control cluster on the right */
+.cam-controls{display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:.2rem 0}
+.cam-speaker{display:grid;grid-template-columns:repeat(3,5px);gap:4px}
+.cam-speaker i{width:5px;height:5px;border-radius:50%;background:rgba(0,0,0,.32);box-shadow:inset 0 1px 1px rgba(0,0,0,.6),0 1px 0 rgba(255,255,255,.4)}
+.cam-dpad{position:relative;width:86px;height:86px;border-radius:50%;
+  background:linear-gradient(180deg,#cac5ba,#a5a095);
+  box-shadow:0 3px 6px rgba(0,0,0,.28),inset 0 2px 2px rgba(255,255,255,.6),inset 0 -3px 5px rgba(0,0,0,.25)}
+.cam-dpad::after{content:'OK';position:absolute;inset:29px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-osd);font-size:.8rem;color:#6f6a60;background:linear-gradient(180deg,#d8d4cb,#b5b0a5);
+  box-shadow:0 1px 3px rgba(0,0,0,.35),inset 0 1px 1px rgba(255,255,255,.6)}
+.cam-arrow{position:absolute;width:26px;height:26px;border:none;background:none;cursor:pointer;
+  font-size:13px;line-height:1;color:#57534b;text-shadow:0 1px 0 rgba(255,255,255,.45);
+  display:flex;align-items:center;justify-content:center;border-radius:50%;transition:transform .12s,color .15s}
+.cam-arrow:hover{color:#2c2825}
+.cam-arrow:active{transform:scale(.82)}
+.cam-prev{left:2px;top:50%;transform:translateY(-50%)}
+.cam-prev:active{transform:translateY(-50%) scale(.82)}
+.cam-next{right:2px;top:50%;transform:translateY(-50%)}
+.cam-next:active{transform:translateY(-50%) scale(.82)}
+.cam-up{top:2px;left:50%;transform:translateX(-50%)}
+.cam-down{bottom:2px;left:50%;transform:translateX(-50%)}
+.cam-minis{display:flex;gap:8px}
+.cam-mini{border:none;cursor:pointer;font-family:var(--font-osd);font-size:.68rem;letter-spacing:.06em;color:#57534b;
+  background:linear-gradient(180deg,#d3cfc5,#aba69b);border-radius:9px;padding:4px 9px;
+  box-shadow:0 2px 4px rgba(0,0,0,.25),inset 0 1px 1px rgba(255,255,255,.6);transition:transform .12s}
+.cam-mini:active{transform:scale(.9)}
+.cam-led{width:7px;height:7px;border-radius:50%;background:#7ee08a;box-shadow:0 0 7px #7ee08a,inset 0 -1px 1px rgba(0,0,0,.3)}
+.cam-hint{font-family:var(--font);font-size:.9rem;color:var(--taupe);opacity:.8;text-align:center}
 
 /* ── SECRET CORNER ── */
 #secret-corner{position:absolute;bottom:0;right:0;width:90px;height:90px;cursor:pointer;z-index:50}
@@ -130,16 +215,16 @@ section{scroll-snap-align:start;min-height:100vh;position:relative;overflow:hidd
 #secret-overlay{position:fixed;inset:0;z-index:2000;display:flex;align-items:center;justify-content:center;pointer-events:none;visibility:hidden}
 .overlay-bg{position:absolute;inset:0;background:rgba(245,239,230,.97);backdrop-filter:blur(10px);opacity:0}
 .secret-card{position:relative;background:#fdf8f1;max-width:680px;width:90%;padding:3.5rem 3rem 3rem;
-  box-shadow:8px 10px 48px rgba(44,40,37,.22);border-radius:2px;text-align:center;transform-origin:bottom right}
+  box-shadow:6px 10px 30px rgba(44,40,37,.18),14px 22px 64px rgba(44,40,37,.24);border-radius:2px;text-align:center;transform-origin:bottom right}
 .secret-card::before,.secret-card::after{content:'';display:block;width:84px;height:24px;
   background:var(--tape);position:absolute;box-shadow:0 1px 4px rgba(0,0,0,.07)}
 .secret-card::before{top:-12px;left:50%;transform:translateX(-50%) rotate(-3deg)}
 .secret-card::after{bottom:-12px;left:50%;transform:translateX(-50%) rotate(2deg)}
 #overlay-heart{display:block;margin:0 auto 1.4rem;width:64px;height:64px;overflow:visible}
-.secret-title{font-family:var(--font);font-size:clamp(1.8rem,5vw,2.8rem);color:var(--rose);margin-bottom:1.5rem;line-height:1.2}
+.secret-title{font-family:var(--font-display);font-weight:700;font-size:clamp(1.8rem,4.5vw,2.6rem);letter-spacing:-.01em;color:var(--rose);margin-bottom:1.4rem;line-height:1.15}
 .secret-body{font-family:var(--font);font-size:clamp(1rem,2.3vw,1.3rem);color:var(--charcoal);line-height:1.95;margin-bottom:2rem}
-.secret-body strong{color:var(--rose)}
-.secret-sig{font-family:var(--font);font-size:1.55rem;color:var(--taupe)}
+.secret-body strong{color:var(--rose-deep)}
+.secret-sig{font-family:var(--font-display);font-weight:600;font-size:1.2rem;color:var(--taupe)}
 .close-btn{position:absolute;top:1.1rem;right:1.4rem;font-family:var(--font);font-size:1.3rem;
   color:var(--taupe);background:none;border:none;cursor:pointer;padding:4px 10px;transition:color .2s,transform .2s}
 .close-btn:hover{color:var(--rose);transform:rotate(10deg) scale(1.18)}
@@ -147,7 +232,48 @@ section{scroll-snap-align:start;min-height:100vh;position:relative;overflow:hidd
 #confetti-canvas{position:fixed;inset:0;z-index:1999;pointer-events:none;opacity:0;transition:opacity .4s}
 #confetti-canvas.active{opacity:1}
 
+/* ── ANNIVERSARY POPUP (auto-opens on load) ── */
+#anniv-overlay{position:fixed;inset:0;z-index:2100;display:flex;align-items:center;justify-content:center;pointer-events:none;visibility:hidden}
+.anniv-bg{position:absolute;inset:0;background:rgba(44,40,37,.42);backdrop-filter:blur(6px);opacity:0}
+.anniv-card{position:relative;background:
+  radial-gradient(circle at 50% 0,rgba(201,168,76,.10),transparent 60%),#fdf8f1;
+  max-width:600px;width:90%;padding:3.4rem 2.8rem 2.8rem;text-align:center;border-radius:3px;
+  box-shadow:6px 10px 30px rgba(44,40,37,.20),14px 22px 64px rgba(44,40,37,.28);
+  border:1px solid rgba(201,168,76,.35);transform-origin:center center}
+.anniv-card::before,.anniv-card::after{content:'';position:absolute;width:88px;height:24px;
+  background:var(--tape);box-shadow:0 1px 4px rgba(0,0,0,.07)}
+.anniv-card::before{top:-12px;left:26%;transform:rotate(-4deg)}
+.anniv-card::after{top:-12px;right:26%;transform:rotate(3deg)}
+.anniv-ribbon{display:inline-block;font-family:var(--font);font-size:.8rem;letter-spacing:.22em;
+  text-transform:uppercase;color:#fff;background:linear-gradient(180deg,var(--gold),var(--gold-deep));
+  padding:.42rem 1.2rem;border-radius:100px;box-shadow:0 2px 8px rgba(168,134,47,.35);margin-bottom:1.3rem}
+#anniv-heart{display:block;margin:0 auto 1rem;width:58px;height:54px;overflow:visible}
+.anniv-date{font-family:var(--font);font-size:clamp(.85rem,2vw,1rem);letter-spacing:.1em;
+  color:var(--taupe);margin-bottom:.5rem}
+.anniv-title{font-family:var(--font-display);font-weight:700;font-size:clamp(2rem,5.5vw,3.2rem);
+  letter-spacing:-.02em;color:var(--charcoal);line-height:1.08;margin-bottom:1.2rem}
+.anniv-title span{color:var(--rose)}
+.anniv-body{font-family:var(--font);font-size:clamp(1rem,2.3vw,1.22rem);color:var(--charcoal);
+  line-height:1.85;margin-bottom:1.6rem}
+.anniv-body strong{color:var(--rose-deep)}
+.anniv-sig{font-family:var(--font-display);font-weight:600;font-size:1.2rem;color:var(--rose)}
+/* little pill to re-open the note after it's been dismissed */
+#anniv-reopen{position:fixed;left:1.1rem;bottom:1.1rem;z-index:1500;display:none;align-items:center;gap:.4rem;
+  font-family:var(--font);font-size:.9rem;color:var(--charcoal);background:#fdf8f1;
+  padding:.5rem .9rem;border:1px solid rgba(201,168,76,.4);border-radius:100px;cursor:pointer;
+  box-shadow:var(--paper-shadow);transition:transform .2s,box-shadow .2s}
+#anniv-reopen:hover{transform:translateY(-2px) rotate(-2deg);box-shadow:var(--paper-shadow-hover)}
+#anniv-reopen svg{width:16px;height:15px;overflow:visible}
+
 @media(max-width:640px){
+  .anniv-card{padding:2.8rem 1.6rem 2.2rem}
+  .anniv-card::before{left:16%}.anniv-card::after{right:16%}
+  #digicam{padding:5rem .8rem}
+  .cam-main{flex-direction:column;align-items:center}
+  .cam-screen{width:min(78vw,320px)}
+  .cam-controls{flex-direction:row;width:100%;padding:.2rem .4rem;align-items:center}
+  .cam-dpad{width:74px;height:74px}
+  .cam-dpad::after{inset:24px;font-size:.7rem}
   .cover-inner{flex-direction:column;gap:2rem}
   .hero-photo-wrap{width:clamp(180px,70vw,240px);transform:rotate(-2deg)!important}
   .tl-item:nth-child(odd),.tl-item:nth-child(even){flex-direction:column;align-items:flex-start;padding:0 0 0 2.5rem}
@@ -163,8 +289,53 @@ section{scroll-snap-align:start;min-height:100vh;position:relative;overflow:hidd
 </head>
 <body>
 
+<!-- ═══ HERO · VINTAGE DIGICAM ═══ -->
+<section id="digicam" class="torn-bottom">
+  <div class="washi washi-gold" style="width:110px;top:4rem;left:4rem;transform:rotate(-7deg)"></div>
+  <div class="washi washi-pink" style="width:90px;bottom:5rem;right:4rem;transform:rotate(5deg)"></div>
+  <h1 class="cam-heading">recuerditos.mp4</h1>
+  <div class="cam-stage">
+    <div class="cam-body">
+      <div class="cam-topbar">
+        <span class="cam-brand">mimorchi</span>
+        <span class="cam-model">DV-2024</span>
+      </div>
+      <div class="cam-main">
+        <div class="cam-bezel">
+          <div class="cam-screen">
+            <canvas id="cam-canvas"></canvas>
+            <div class="cam-osd">
+              <span class="osd-mode" id="osd-mode">► PLAY</span>
+              <span class="osd-count" id="osd-count">1/7</span>
+              <span class="osd-batt"></span>
+              <span class="osd-date" id="osd-date"></span>
+              <span class="osd-caption" id="osd-caption"></span>
+              <span class="osd-noimg" id="osd-noimg">NO IMAGE</span>
+            </div>
+          </div>
+        </div>
+        <div class="cam-controls">
+          <div class="cam-speaker"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <div class="cam-dpad">
+            <button class="cam-arrow cam-prev" id="cam-prev" aria-label="previous">◀</button>
+            <button class="cam-arrow cam-next" id="cam-next" aria-label="next">▶</button>
+            <span class="cam-arrow cam-up">▲</span>
+            <span class="cam-arrow cam-down">▼</span>
+          </div>
+          <div class="cam-minis">
+            <button class="cam-mini" id="cam-disp">DISP</button>
+            <button class="cam-mini">MENU</button>
+          </div>
+          <div class="cam-led"></div>
+        </div>
+      </div>
+    </div>
+    <p class="cam-hint">◀ ▶ to flip through our memories · tap the screen too</p>
+  </div>
+</section>
+
 <!-- ═══ SECTION 1 · COVER ═══ -->
-<section id="cover" class="torn-bottom">
+<section id="cover" class="torn-top torn-bottom">
 
   <!-- floating hearts -->
   <svg class="float-heart" style="top:10%;left:5%;width:68px;height:64px" viewBox="0 0 40 36" fill="none"><path d="M20,33 C18,31 3,23 3,14 C2,7 7,2 13,3 C16,4 18,7 20,10 C22,7 24,4 27,3 C33,2 38,7 37,14 C36,23 22,31 20,33Z" stroke="#c97b84" stroke-width="3.5" stroke-linecap="round" fill="rgba(201,123,132,.28)" style="stroke-dasharray:130;stroke-dashoffset:130"/></svg>
@@ -274,34 +445,63 @@ section{scroll-snap-align:start;min-height:100vh;position:relative;overflow:hidd
 </div>
 <canvas id="confetti-canvas"></canvas>
 
+<!-- ═══ ANNIVERSARY POPUP (auto-opens on load) ═══ -->
+<div id="anniv-overlay" role="dialog" aria-modal="true" aria-labelledby="anniv-title">
+  <div class="anniv-bg"></div>
+  <div class="anniv-card">
+    <button class="close-btn" id="close-anniv" aria-label="close">✕</button>
+    <span class="anniv-ribbon">happy anniversary</span>
+    <svg id="anniv-heart" viewBox="0 0 60 54" fill="none">
+      <path id="anniv-heart-path" d="M30,50 C26,46 4,33 4,17 C4,8 11,3 18,5 C23,6.5 27,11 30,15 C33,11 37,6.5 42,5 C49,3 56,8 56,17 C56,33 34,46 30,50Z"
+        stroke="#c97b84" stroke-width="2" stroke-linecap="round" fill="rgba(201,123,132,.28)"
+        stroke-dasharray="240" stroke-dashoffset="240"/>
+    </svg>
+    <p class="anniv-date">17 · 07 · 2022 <span id="anniv-years"></span></p>
+    <h2 class="anniv-title" id="anniv-title">Happy Anniversary,<br><span>mimor</span></h2>
+    <p class="anniv-body">
+      Te he amado por <strong>1461 dias</strong>, por <strong>1461 dias</strong> tu sonrisa, carita, voz, y corazon no han salido de mi mente, <strong>1461 dias</strong> me has hecho muy feliz,<br><br>
+      and even when things get tough don't forget I'll always love you
+    </p>
+    <p class="anniv-sig">— Jose ♡</p>
+  </div>
+</div>
+
+<!-- little pill to bring the note back after it's closed -->
+<button id="anniv-reopen" aria-label="reopen anniversary note">
+  <svg viewBox="0 0 30 28" fill="none"><path d="M15,25 C13,23 2,16 2,9 C2,4 6,1 10,2 C12,3 14,5 15,7 C16,5 18,3 20,2 C24,1 28,4 28,9 C28,16 17,23 15,25Z" stroke="#c97b84" stroke-width="2" fill="rgba(201,123,132,.35)"/></svg>
+  our anniversary
+</button>
+
 <script>
 gsap.registerPlugin(ScrollTrigger);
 const rand=(a,b)=>Math.random()*(b-a)+a;
 const qs=s=>document.querySelector(s);
 const qsa=s=>[...document.querySelectorAll(s)];
 
-/* COVER */
+/* COVER (now second — animates when scrolled into view) */
 (()=>{
   gsap.set('.hero-photo-wrap',{opacity:0,y:-30,rotation:-8});
-  const tl=gsap.timeline({defaults:{ease:'power3.out'}});
-  tl.to('.cover-date',      {opacity:1,y:0,duration:.8},0.3)
-    .to('.hero-photo-wrap', {opacity:1,y:0,rotation:-3,duration:1,ease:'elastic.out(1,.7)'},0.4)
-    .to('.cover-title',     {opacity:1,y:0,duration:1.1,ease:'elastic.out(1,.7)'},0.7)
-    .to('.squiggle',        {opacity:1,duration:.4},1.3)
-    .to('.ink-draw',        {strokeDashoffset:0,duration:1.3,ease:'power2.inOut'},1.3)
-    .to('.cover-subtitle',  {opacity:1,y:0,duration:.8},2.1)
-    .to('.scroll-hint',     {opacity:1,duration:.6},2.6);
-  qsa('.float-heart').forEach((h,i)=>{
-    const p=h.querySelector('path');
-    gsap.set(h,{opacity:0});
-    gsap.to(h,{opacity:rand(.3,.65),duration:.6,delay:1.2+i*.18,ease:'power2.out'});
-    if(p) gsap.to(p,{strokeDashoffset:0,duration:1.2,delay:1.2+i*.2,ease:'power2.inOut'});
-    gsap.to(h,{y:rand(-10,10),x:rand(-5,5),duration:rand(3,5),yoyo:true,repeat:-1,ease:'sine.inOut',delay:rand(0,2)});
-  });
-  qsa('#cover .sketch').forEach((s,i)=>{
-    gsap.set(s,{scale:0,transformOrigin:'center center'});
-    gsap.to(s,{opacity:1,scale:1,duration:.7,delay:1.8+i*.3,ease:'back.out(2.2)'});
-  });
+  qsa('.float-heart').forEach(h=>gsap.set(h,{opacity:0}));
+  qsa('#cover .sketch').forEach(s=>gsap.set(s,{scale:0,transformOrigin:'center center'}));
+  ScrollTrigger.create({trigger:'#cover',start:'top 70%',once:true,onEnter:()=>{
+    const tl=gsap.timeline({defaults:{ease:'power3.out'}});
+    tl.to('.cover-date',      {opacity:1,y:0,duration:.8},0.1)
+      .to('.hero-photo-wrap', {opacity:1,y:0,rotation:-3,duration:1,ease:'elastic.out(1,.7)'},0.2)
+      .to('.cover-title',     {opacity:1,y:0,duration:1.1,ease:'elastic.out(1,.7)'},0.5)
+      .to('.squiggle',        {opacity:1,duration:.4},1.1)
+      .to('.ink-draw',        {strokeDashoffset:0,duration:1.3,ease:'power2.inOut'},1.1)
+      .to('.cover-subtitle',  {opacity:1,y:0,duration:.8},1.9)
+      .to('.scroll-hint',     {opacity:1,duration:.6},2.4);
+    qsa('.float-heart').forEach((h,i)=>{
+      const p=h.querySelector('path');
+      gsap.to(h,{opacity:rand(.3,.65),duration:.6,delay:1+i*.18,ease:'power2.out'});
+      if(p) gsap.to(p,{strokeDashoffset:0,duration:1.2,delay:1+i*.2,ease:'power2.inOut'});
+      gsap.to(h,{y:rand(-10,10),x:rand(-5,5),duration:rand(3,5),yoyo:true,repeat:-1,ease:'sine.inOut',delay:rand(0,2)});
+    });
+    qsa('#cover .sketch').forEach((s,i)=>{
+      gsap.to(s,{opacity:1,scale:1,duration:.7,delay:1.5+i*.3,ease:'back.out(2.2)'});
+    });
+  }});
 })();
 
 /* MEMORIES */
@@ -352,6 +552,144 @@ ScrollTrigger.create({trigger:'#timeline',start:'top 75%',once:true,onEnter:()=>
   });
   gsap.to('#secret-corner',{scale:1.1,duration:1.4,yoyo:true,repeat:-1,ease:'sine.inOut',transformOrigin:'bottom right',delay:1});
 }});
+
+/* VINTAGE DIGICAM (Three.js CRT screen) */
+(()=>{
+  /* ✏️ EDIT ME — the memories on the camera roll (photos & videos live in the media/ folder).
+     caption + date are drawn on the screen in orange OSD text; date can be '' to hide it. */
+  const CAM_SLIDES=[
+    {type:'photo',src:'media/IMG-20220619-WA0039.jpg',caption:'',date:'19.06.2022'},
+    {type:'video',src:'media/VID-20220619-WA0080.mp4',caption:'',date:'19.06.2022'},
+    {type:'photo',src:'media/IMG-20220622-WA0033.jpg',caption:'',date:'22.06.2022'},
+    {type:'video',src:'media/VID-20220724-WA0098.mp4',caption:'',date:'24.07.2022'},
+    {type:'photo',src:'media/IMG-20220814-WA0073.jpg',caption:'',date:'14.08.2022'},
+    {type:'photo',src:'media/IMG_8629.jpg',caption:'',date:''},
+    {type:'video',src:'media/IMG_7918.mp4',caption:'',date:''},
+  ];
+  const screen=qs('.cam-screen'),canvas=qs('#cam-canvas');
+  const osdMode=qs('#osd-mode'),osdCount=qs('#osd-count'),osdDate=qs('#osd-date'),
+        osdCap=qs('#osd-caption'),osdNoimg=qs('#osd-noimg'),osd=qs('.cam-osd');
+  let idx=0,busy=false,webgl=false,renderer,uniforms,cache={},fallbackEl=null;
+
+  /* three.js scene: one plane, CRT shader (scanlines, grain, chroma shift, barrel, static) */
+  try{
+    if(!window.THREE)throw 0;
+    renderer=new THREE.WebGLRenderer({canvas,antialias:false});
+    const scene=new THREE.Scene();
+    const cam3=new THREE.OrthographicCamera(-1,1,1,-1,0,1);
+    const blank=new THREE.DataTexture(new Uint8Array([5,4,3,255]),1,1);blank.needsUpdate=true;
+    uniforms={
+      uTex:{value:blank},uTexAspect:{value:1},uScreenAspect:{value:4/3},
+      uTime:{value:0},uStatic:{value:0},uHasTex:{value:0}
+    };
+    const mat=new THREE.ShaderMaterial({uniforms,
+      vertexShader:'varying vec2 vUv;void main(){vUv=uv;gl_Position=vec4(position,1.);}',
+      fragmentShader:`
+        uniform sampler2D uTex;uniform float uTexAspect,uScreenAspect,uTime,uStatic,uHasTex;
+        varying vec2 vUv;
+        float rnd(vec2 p){return fract(sin(dot(p,vec2(12.9898,78.233)))*43758.5453);}
+        void main(){
+          vec2 c=vUv-.5;float r2=dot(c,c);
+          vec2 uv=.5+c*(1.+.07*r2);                       /* barrel curve */
+          vec2 t=uv-.5;                                    /* contain-fit */
+          if(uTexAspect>uScreenAspect)t.y*=uTexAspect/uScreenAspect;
+          else t.x*=uScreenAspect/uTexAspect;
+          t+=.5;
+          float inside=step(0.,t.x)*step(t.x,1.)*step(0.,t.y)*step(t.y,1.);
+          float ab=.002+.012*uStatic;                      /* chroma shift */
+          vec3 tex=vec3(texture2D(uTex,t+vec2(ab,0.)).r,texture2D(uTex,t).g,texture2D(uTex,t-vec2(ab,0.)).b);
+          vec3 col=mix(vec3(.016,.013,.01),tex,inside*uHasTex);
+          col*=.90+.10*sin(uv.y*420.);                     /* scanlines */
+          col+=.025*sin(uv.y*7.-uTime*1.4);                /* rolling band */
+          col+=(rnd(uv+fract(uTime*.37))-.5)*.055;         /* grain */
+          float st=rnd(vec2(floor(uv.y*72.),floor(uTime*55.)));
+          col=mix(col,vec3(st*.9),uStatic);                /* static burst */
+          col*=clamp(1.-r2*1.05,0.,1.);                    /* vignette */
+          col*=1.+.35*uStatic;
+          gl_FragColor=vec4(col,1.);
+        }`});
+    scene.add(new THREE.Mesh(new THREE.PlaneGeometry(2,2),mat));
+    function resize(){
+      const w=screen.clientWidth,h=screen.clientHeight;
+      renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));
+      renderer.setSize(w,h,false);
+      uniforms.uScreenAspect.value=w/h;
+    }
+    resize();window.addEventListener('resize',resize);
+    renderer.render(scene,cam3); /* compile shader up front */
+    gsap.ticker.add((t)=>{uniforms.uTime.value=t;renderer.render(scene,cam3);});
+    webgl=true;
+  }catch(e){canvas.style.display='none';}
+
+  function getTex(i,cb){
+    if(cache[i])return cb(cache[i]);
+    const s=CAM_SLIDES[i];
+    if(s.type==='video'){
+      const v=document.createElement('video');
+      v.src=s.src;v.muted=true;v.loop=true;v.playsInline=true;v.preload='metadata';v.crossOrigin='anonymous';
+      v.addEventListener('loadedmetadata',()=>{
+        const t=new THREE.VideoTexture(v);t.minFilter=THREE.LinearFilter;
+        cache[i]={tex:t,video:v,aspect:v.videoWidth/v.videoHeight};cb(cache[i]);
+      },{once:true});
+      v.addEventListener('error',()=>{cache[i]={err:1};cb(cache[i]);},{once:true});
+    }else{
+      new THREE.TextureLoader().load(s.src,(t)=>{
+        t.minFilter=THREE.LinearFilter;t.generateMipmaps=false;
+        cache[i]={tex:t,aspect:t.image.width/t.image.height};cb(cache[i]);
+      },undefined,()=>{cache[i]={err:1};cb(cache[i]);});
+    }
+  }
+  function stopVideos(){Object.values(cache).forEach(c=>{if(c.video&&!c.video.paused)c.video.pause();});}
+  function showSlide(i){
+    const s=CAM_SLIDES[i];
+    osdMode.innerHTML=s.type==='video'?'<span class="rec-dot"></span>REC':'► PLAY';
+    osdCount.textContent=(i+1)+'/'+CAM_SLIDES.length;
+    osdDate.textContent=s.date||'';
+    osdCap.textContent=s.caption||'';
+    osdNoimg.style.display='none';
+    stopVideos();
+    if(webgl){
+      getTex(i,(c)=>{
+        if(i!==idx)return;
+        if(c.err){uniforms.uHasTex.value=0;osdNoimg.style.display='flex';return;}
+        uniforms.uTex.value=c.tex;uniforms.uTexAspect.value=c.aspect;uniforms.uHasTex.value=1;
+        if(c.video){const p=c.video.play();if(p&&p.catch)p.catch(()=>{});}
+      });
+    }else{ /* no-WebGL fallback: plain media elements in the screen */
+      if(fallbackEl)fallbackEl.remove();
+      fallbackEl=document.createElement(s.type==='video'?'video':'img');
+      fallbackEl.src=s.src;
+      if(s.type==='video'){fallbackEl.muted=true;fallbackEl.loop=true;fallbackEl.playsInline=true;fallbackEl.autoplay=true;}
+      fallbackEl.onerror=()=>{osdNoimg.style.display='flex';};
+      screen.insertBefore(fallbackEl,osd);
+    }
+  }
+  function go(dir){
+    if(busy)return;busy=true;
+    if(webgl){
+      gsap.timeline({onComplete:()=>busy=false})
+        .to(uniforms.uStatic,{value:1,duration:.1,ease:'power2.in'})
+        .add(()=>{idx=(idx+dir+CAM_SLIDES.length)%CAM_SLIDES.length;showSlide(idx);})
+        .to(uniforms.uStatic,{value:0,duration:.3,ease:'power2.out'});
+    }else{
+      idx=(idx+dir+CAM_SLIDES.length)%CAM_SLIDES.length;showSlide(idx);busy=false;
+    }
+  }
+  qs('#cam-next').addEventListener('click',()=>go(1));
+  qs('#cam-prev').addEventListener('click',()=>go(-1));
+  screen.addEventListener('click',()=>go(1));
+  qs('#cam-disp').addEventListener('click',()=>osd.classList.toggle('off'));
+  qsa('.cam-mini')[1].addEventListener('click',()=>{ /* MENU easter egg */
+    const old=osdCap.textContent;osdCap.textContent='no menu. just us ♡';
+    setTimeout(()=>{if(osdCap.textContent==='no menu. just us ♡')osdCap.textContent=old;},1600);
+  });
+  showSlide(0);
+
+  /* hero entrance — plays on load */
+  gsap.set('.cam-heading',{y:24});
+  gsap.to('.cam-heading',{opacity:1,y:0,duration:.8,ease:'power2.out',delay:.3});
+  gsap.fromTo('.cam-stage',{y:30},{opacity:1,y:0,duration:.9,ease:'power3.out',delay:.5});
+})();
 
 /* WASHI */
 qsa('.washi').forEach((w,i)=>{
@@ -421,6 +759,64 @@ function launchConfetti(){
   setTimeout(()=>{cancelAnimationFrame(frame);canvas.classList.remove('active');},5500);
 }
 window.addEventListener('resize',()=>{confCanvas.width=window.innerWidth;confCanvas.height=window.innerHeight;});
+
+/* ANNIVERSARY POPUP */
+(()=>{
+  const aOverlay=qs('#anniv-overlay'),aCard=qs('.anniv-card'),aBg=qs('.anniv-bg');
+  const aClose=qs('#close-anniv'),aReopen=qs('#anniv-reopen'),aHeart=qs('#anniv-heart');
+  const aHeartPath=qs('#anniv-heart-path');
+  let aOpen=false;
+  gsap.set(aCard,{scale:.7,y:34,opacity:0,transformOrigin:'center center'});
+  gsap.set(aHeart,{opacity:0,scale:.4});
+  gsap.set('.anniv-ribbon,.anniv-date,.anniv-title,.anniv-body,.anniv-sig',{opacity:0,y:16});
+
+  function openAnniv(){
+    if(aOpen)return;aOpen=true;
+    aOverlay.style.visibility='visible';aOverlay.style.pointerEvents='all';
+    aReopen.style.display='none';
+    const tl=gsap.timeline();
+    tl.to(aBg,{opacity:1,duration:.45,ease:'power2.out'})
+      .to(aCard,{scale:1,y:0,opacity:1,duration:.75,ease:'back.out(1.5)'},'-=.2')
+      .to(aHeart,{opacity:1,scale:1,duration:.4,ease:'back.out(2)'},'-=.35')
+      .to(aHeartPath,{strokeDashoffset:0,duration:1,ease:'power2.inOut'},'-=.3')
+      .to('.anniv-ribbon',{opacity:1,y:0,duration:.4,ease:'power2.out'},'-=.55')
+      .to('.anniv-date', {opacity:1,y:0,duration:.4,ease:'power2.out'},'-=.35')
+      .to('.anniv-title',{opacity:1,y:0,duration:.5,ease:'power2.out'},'-=.3')
+      .to('.anniv-body', {opacity:1,y:0,duration:.5,ease:'power2.out'},'-=.35')
+      .to('.anniv-sig',  {opacity:1,y:0,duration:.4,ease:'power2.out'},'-=.3')
+      .call(()=>{try{launchConfetti();}catch(e){}},[],'-=.55');
+  }
+  function closeAnniv(){
+    if(!aOpen)return;aOpen=false;
+    gsap.timeline()
+      .to('.anniv-ribbon,.anniv-date,.anniv-title,.anniv-body,.anniv-sig',{opacity:0,y:8,duration:.18,stagger:.04})
+      .to(aHeart,{opacity:0,scale:.5,duration:.2},'-=.12')
+      .to(aCard,{scale:.7,y:26,opacity:0,duration:.34,ease:'power2.in'},'-=.14')
+      .to(aBg,{opacity:0,duration:.3},'-=.2')
+      .call(()=>{
+        aOverlay.style.visibility='hidden';aOverlay.style.pointerEvents='none';
+        gsap.set(aHeartPath,{strokeDashoffset:240});
+        gsap.set('.anniv-ribbon,.anniv-date,.anniv-title,.anniv-body,.anniv-sig',{y:16});
+        aReopen.style.display='inline-flex';
+      });
+  }
+  aClose.addEventListener('click',closeAnniv);
+  aReopen.addEventListener('click',openAnniv);
+  aOverlay.addEventListener('click',e=>{if(e.target===aOverlay||e.target===aBg)closeAnniv();});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeAnniv();});
+
+  /* "· N years ♡" — computed from 17.07.2022 so it stays correct forever */
+  const yrs=Math.floor((Date.now()-new Date(2022,6,17))/(365.25*24*3600*1000));
+  if(yrs>0)qs('#anniv-years').textContent='· '+yrs+' year'+(yrs>1?'s':'')+' ♡';
+
+  /* auto-open once per browser session so it greets on arrival without nagging on every scroll/refresh */
+  if(!sessionStorage.getItem('annivSeen')){
+    sessionStorage.setItem('annivSeen','1');
+    window.addEventListener('load',()=>setTimeout(openAnniv,1400));
+  }else{
+    aReopen.style.display='inline-flex';
+  }
+})();
 </script>
 </body>
 </html>
